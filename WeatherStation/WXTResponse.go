@@ -20,7 +20,9 @@ type WXTResponse struct {
 
 func cut(str string, start string, end string) string {
 	t := []rune(str)
-	t = t[len(start):len(str)-len(end)]
+	if len(start) + len(end) < len(str) {
+		t = t[len(start):len(str)-len(end)]
+	}
 	return string(t)
 }
 
