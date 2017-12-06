@@ -32,7 +32,7 @@ func (wxt *WeatherStation) read() string {
 }
 
 func (wxt *WeatherStation) Configure() {
-	delay := time.Millisecond * 300
+	delay := time.Millisecond * 200
 
 	wxt.port.Flush()
 	// send set_comm
@@ -72,6 +72,7 @@ func (wxt *WeatherStation) Configure() {
 func (wxt *WeatherStation) UpdateResponse() {
 	resp := strings.Split(strings.TrimSpace(wxt.read()),",")
 	// parse the values
+	wxt.Response.Time = time.Now()
 	wxt.Response.Parse(resp[1:len(resp)])
 	// next sample request
 	wxt.write("0R0\r\n")
