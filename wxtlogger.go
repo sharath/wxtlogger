@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func sample(x *wxt.WeatherStation) {
+func sample(x *wxt.WeatherStation, i int) {
 	for {
 		x.UpdateResponse()
 		time.Sleep(time.Second)
@@ -16,9 +16,9 @@ func sample(x *wxt.WeatherStation) {
 
 func main() {
 	wstations := conf.Load("config.json").Wxt;
-	for _, w := range wstations {
+	for i, w := range wstations {
 		w.Configure()
-		go sample(&w)
+		go sample(&w, i)
 	}
 	select {}
 }
