@@ -1,6 +1,9 @@
 package WeatherStation
 
-import "github.com/tarm/serial"
+import (
+	"github.com/tarm/serial"
+	"time"
+)
 
 type WeatherStation struct {
 	Location string
@@ -13,7 +16,7 @@ func NewWeatherStation(location string, baud int) *WeatherStation {
 	wxt := new(WeatherStation)
 	wxt.Location = location
 	wxt.Baud = baud
-	wxt.port, _ = serial.OpenPort(&serial.Config{Name: location, Baud: baud})
+	wxt.port, _ = serial.OpenPort(&serial.Config{Name: location, Baud: baud, ReadTimeout: time.Second})
 	return wxt
 }
 
@@ -21,20 +24,31 @@ func (wxt *WeatherStation) write(command string) {
 	wxt.port.Write([]byte(command))
 }
 
-func (wxt *WeatherStation) configure() {
-	// wxt_comms_configure
-		// send set_comm
-	wxt.port.Write([]byte("0R0\r\n"))
-	// wxt_wind_configure
-		// send set_wind_conf
-		// set wind_units in WXTResponse
-		// send set_wind_parameters
-	// wxt_ptu_configure
-		// send set_ptu_conf
-		// set pressure_units in WXTResponse
-		// set temp_units in WXTResponse
-		// send set_ptu_parameters
-	// wxt_supervisor_configure
-		// send set_super_conf
-		// send set_super_parameters
+func (wxt *WeatherStation) Read() string {
+	buf := make([]byte, 1024)
+	wxt.port.Read(buf)
+	return string(buf)
+}
+
+func (wxt *WeatherStation) Configure() {
+	// set units
+	wxt.Response.WindUnits = "m/s"
+	wxt.Response.PressureUnits = "hPa"
+	wxt.Response.TempUnits = "F"
+	wxt.port.Flush()
+	// send set_comm
+	wxt.write("0XU,M=P,C=3,B=4800,L=25\r\n")
+	// send set_wind_conf
+	wxt.write("0WU,I=1,A=1,U=M,D=0,N=W,F=1\r\n")
+	// send set_wind_parameters
+	wxt.write("0WU,R=0100100001001000\r\n")
+	// send set_ptu_conf
+	wxt.write("0TU,I=1,P=H,T=F\r\n")
+	// send set_ptu_parameters
+	wxt.write("0TU,R=1101000011010000\r\n")
+	// send set_super_conf
+	wxt.write("0SU,S=N,H=Y,I=5\r\n")
+	// send set_super_parameters
+	wxt.write("0SU,R=1111000000000000\r\n")
+	wxt.port.Flush()
 }
