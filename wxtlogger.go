@@ -19,13 +19,13 @@ func sample(x *wxt.WeatherStation, i int) {
 	file, _ := os.Create(path.Join(folder, filename))
 	w := bufio.NewWriter(file)
 
-	header := fmt.Sprintf("Model Number: WXT-510\n");
-	header += fmt.Sprintf("Sample rate: 1 (Hz)\n");
-	header += fmt.Sprintf("Wind speed units: m/s\n");
-	header += fmt.Sprintf("Pressure units: hPa\n");
-	header += fmt.Sprintf("Temperature units: F\n\n");
-	header += fmt.Sprintf("Index, Hour, Minute, Second, Direction, Speed, Temp, Humidity, Pressure\n");
-	header += fmt.Sprintf("_______________________________________________________________________\n\n");
+	header := fmt.Sprintf("Model Number: WXT-510\n")
+	header += fmt.Sprintf("Sample rate: 1 (Hz)\n")
+	header += fmt.Sprintf("Wind speed units: m/s\n")
+	header += fmt.Sprintf("Pressure units: hPa\n")
+	header += fmt.Sprintf("Temperature units: F\n\n")
+	header += fmt.Sprintf("Index, Hour, Minute, Second, Direction, Speed, Temp, Humidity, Pressure\n")
+	header += fmt.Sprintf("_______________________________________________________________________\n\n")
 	fmt.Print(header)
 	fmt.Fprint(w, header)
 	w.Flush()
@@ -59,7 +59,7 @@ func sample(x *wxt.WeatherStation, i int) {
 
 
 func main() {
-	wstations := conf.Load("config.json").Wxt;
+	wstations := conf.Load("config.json").Wxt
 	for i, w := range wstations {
 		w.Configure()
 		go sample(&w, i)
