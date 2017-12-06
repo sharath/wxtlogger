@@ -4,7 +4,6 @@ import (
 	"time"
 	"strings"
 	"strconv"
-	"fmt"
 )
 
 type WXTResponse struct {
