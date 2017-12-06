@@ -7,18 +7,10 @@ import (
 )
 
 type WeatherStation struct {
-	Location string
-	Baud int
+	Location string `json:"location"`
+	Baud     int    `json:"baud,string"`
 	Response WXTResponse
-	port *serial.Port
-}
-
-func NewWeatherStation(location string, baud int) *WeatherStation {
-	wxt := new(WeatherStation)
-	wxt.Location = location
-	wxt.Baud = baud
-	wxt.port, _ = serial.OpenPort(&serial.Config{Name: location, Baud: baud, ReadTimeout: time.Second})
-	return wxt
+	port     *serial.Port
 }
 
 func (wxt *WeatherStation) write(command string) {
@@ -32,8 +24,9 @@ func (wxt *WeatherStation) read() string {
 }
 
 func (wxt *WeatherStation) Configure() {
+	wxt.port, _ = serial.OpenPort(&serial.Config{Name: wxt.Location, Baud: wxt.Baud, ReadTimeout: time.Second})
 	delay := time.Millisecond * 200
-
+	time.Sleep(delay)
 	wxt.port.Flush()
 	// send set_comm
 	wxt.write("0XU,M=P,C=3,B=4800,L=25\r\n")
