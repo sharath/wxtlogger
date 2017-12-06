@@ -54,5 +54,4 @@ func (storage *WXTResponse) Parse(resp []string) {
 			continue
 		}
 	}
-	fmt.Println(storage)
 }
