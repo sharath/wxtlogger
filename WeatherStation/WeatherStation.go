@@ -50,7 +50,6 @@ func (wxt *WeatherStation) Configure() {
 
 	wxt.Response.Time = time.Now()
 	wxt.write("0R0\r\n")
-	time.Sleep(time.Second)
 }
 
 
