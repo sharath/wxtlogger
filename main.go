@@ -1,7 +1,7 @@
 package main
 
 import (
-	wxt "github.com/sharath/wxtlogger/WeatherStation"
+	wxt "github.com/sharath/infralogger/WeatherStation"
 	"time"
 	"fmt"
 	"os"
