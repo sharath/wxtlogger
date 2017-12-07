@@ -59,7 +59,7 @@ func sample(x *wxt.Station, i int) {
 
 
 func main() {
-	wstations := conf.Load("config.json").Wxt
+	wstations := conf.Load("wxt_config.json").Wxt
 	for i, w := range wstations {
 		w.Configure()
 		go sample(&w, i)
