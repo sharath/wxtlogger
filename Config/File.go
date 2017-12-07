@@ -8,12 +8,12 @@ import (
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
-type Configuration struct {
+type File struct {
 	Wxt []WeatherStation.Station
 }
 
-func Load(file string) *Configuration {
-	cf := new(Configuration)
+func Load(file string) *File {
+	cf := new(File)
 	configFile,_ := ioutil.ReadFile(file)
 	json.Unmarshal(configFile, &cf.Wxt)
 	return cf
