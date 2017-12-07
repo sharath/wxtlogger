@@ -9,7 +9,7 @@ import (
 	"bufio"
 )
 
-func sample(x *wxt.Station, i int) {
+func sampleW(x *wxt.Device, i int) {
 	var index uint64 = 0
 
 	folder := time.Now().Format("data-20060102")
@@ -58,10 +58,10 @@ func sample(x *wxt.Station, i int) {
 
 
 func main() {
-	wStations := wxt.Load("wxt_config.json").Wxt
+	wStations := wxt.Load("wStations.json")
 	for i, w := range wStations {
 		w.Configure()
-		go sample(&w, i)
+		go sampleW(&w, i)
 	}
 	select {}
 }

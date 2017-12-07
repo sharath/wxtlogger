@@ -8,9 +8,6 @@ import (
 
 type Response struct {
 	Time time.Time
-	WindUnits string
-	PressureUnits string
-	TempUnits string
 	WindAvg float64
 	WindDir int
 	Temp float64
