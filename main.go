@@ -1,7 +1,7 @@
 package main
 
 import (
-	wxt "github.com/sharath/wxtlogger/WeatherStation"
+	wxt "github.com/sharath/infralogger/WeatherStation"
 	"time"
 	"fmt"
 	"os"
@@ -53,6 +53,8 @@ func sampleW(x *wxt.Device, i int) {
 			w.Flush()
 			index++
 		}
+		// need to fix with select{} eventually
+		time.Sleep(time.Millisecond*50)
 	}
 }
 
