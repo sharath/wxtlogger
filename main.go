@@ -2,7 +2,6 @@ package main
 
 import (
 	wxt "github.com/sharath/wxtlogger/WeatherStation"
-	conf "github.com/sharath/wxtlogger/Config"
 	"time"
 	"fmt"
 	"os"
@@ -59,8 +58,8 @@ func sample(x *wxt.Station, i int) {
 
 
 func main() {
-	wstations := conf.Load("wxt_config.json").Wxt
-	for i, w := range wstations {
+	wStations := wxt.Load("wxt_config.json").Wxt
+	for i, w := range wStations {
 		w.Configure()
 		go sample(&w, i)
 	}

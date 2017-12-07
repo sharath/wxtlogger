@@ -1,15 +1,14 @@
-package Config
+package WeatherStation
 
 import (
 	"github.com/json-iterator/go"
-	"github.com/sharath/wxtlogger/WeatherStation"
 	"io/ioutil"
 )
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 type File struct {
-	Wxt []WeatherStation.Station
+	Wxt []Station
 }
 
 func Load(file string) *File {
