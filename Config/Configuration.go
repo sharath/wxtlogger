@@ -1,10 +1,12 @@
 package Config
 
 import (
+	"github.com/json-iterator/go"
 	"wxtlogger/WeatherStation"
 	"io/ioutil"
-	"encoding/json"
 )
+
+var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 type Configuration struct {
 	Wxt []WeatherStation.WeatherStation
