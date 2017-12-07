@@ -3,7 +3,6 @@ package Barometer
 import (
 	"github.com/tarm/serial"
 	"time"
-	"strings"
 )
 
 type Device struct {
