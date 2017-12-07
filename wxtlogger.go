@@ -1,8 +1,8 @@
 package main
 
 import (
-	wxt "wxtlogger/WeatherStation"
-	conf "wxtlogger/Config"
+	wxt "github.com/sharath/wxtlogger/WeatherStation"
+	conf "github.com/sharath/wxtlogger/Config"
 	"time"
 	"fmt"
 	"os"
@@ -10,7 +10,7 @@ import (
 	"bufio"
 )
 
-func sample(x *wxt.WeatherStation, i int) {
+func sample(x *wxt.Station, i int) {
 	var index uint64 = 0
 
 	folder := time.Now().Format("data-20060102")

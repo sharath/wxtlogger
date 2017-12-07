@@ -6,24 +6,24 @@ import (
 	"strings"
 )
 
-type WeatherStation struct {
+type Station struct {
 	Location string `json:"location"`
 	Baud     int    `json:"baud,string"`
-	Response WXTResponse
+	Response Response
 	port     *serial.Port
 }
 
-func (wxt *WeatherStation) write(command string) {
+func (wxt *Station) write(command string) {
 	wxt.port.Write([]byte(command))
 }
 
-func (wxt *WeatherStation) read() string {
+func (wxt *Station) read() string {
 	buf := make([]byte, 1024)
 	wxt.port.Read(buf)
 	return string(buf)
 }
 
-func (wxt *WeatherStation) Configure() {
+func (wxt *Station) Configure() {
 	wxt.port, _ = serial.OpenPort(&serial.Config{Name: wxt.Location, Baud: wxt.Baud, ReadTimeout: time.Second})
 	delay := time.Millisecond * 200
 	time.Sleep(delay)
@@ -53,7 +53,7 @@ func (wxt *WeatherStation) Configure() {
 }
 
 
-func (wxt *WeatherStation) UpdateResponse() {
+func (wxt *Station) UpdateResponse() {
 	resp := strings.Split(strings.TrimSpace(wxt.read()),",")
 	wxt.Response.Parse(resp[1:])
 	wxt.Response.Time = time.Now()

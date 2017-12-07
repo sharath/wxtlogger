@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-type WXTResponse struct {
+type Response struct {
 	Time time.Time
 	WindUnits string
 	PressureUnits string
@@ -26,7 +26,7 @@ func cut(str string, start string, end string) string {
 	return string(t)
 }
 
-func (storage *WXTResponse) Parse(resp []string) {
+func (storage *Response) Parse(resp []string) {
 	for _, p := range resp {
 		t := p
 		for strings.Contains(t, "\x00") || strings.Contains(t, "\x00") {
