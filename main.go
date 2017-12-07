@@ -61,7 +61,7 @@ func main() {
 	wStations := wxt.Load("wStations.json")
 	for i, w := range wStations {
 		w.Configure()
-		go sampleW(&w, i)
+		go sampleW(&w, i+1)
 	}
 	select {}
 }
