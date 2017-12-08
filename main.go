@@ -9,11 +9,11 @@ import (
 	"bufio"
 )
 
-func sampleW(x *wxt.Device, i int) {
+func sampleW(x *wxt.Device) {
 	var index uint64 = 0
 
 	folder := time.Now().Format("data-20060102")
-	filename := fmt.Sprintf("WX%d-%s",i,time.Now().Format("20060102-030405.txt"))
+	filename := fmt.Sprintf("WX%d-%s",x.Id,time.Now().Format("20060102-030405.txt"))
 	os.Mkdir(folder, 0777)
 	file, _ := os.Create(path.Join(folder, filename))
 	w := bufio.NewWriter(file)
@@ -34,7 +34,7 @@ func sampleW(x *wxt.Device, i int) {
 			if time.Now().Day() != x.Response.Time.Day() {
 				file.Close()
 				folder = time.Now().Format("data-20060102")
-				filename = fmt.Sprintf("WX%d-%s",i,time.Now().Format("20060102-030405.txt"))
+				filename = fmt.Sprintf("WX%d-%s",x.Id,time.Now().Format("20060102-030405.txt"))
 				os.Mkdir(folder, 0777)
 				file, _ = os.Create(path.Join(folder, filename))
 				w = bufio.NewWriter(file)
@@ -60,10 +60,10 @@ func sampleW(x *wxt.Device, i int) {
 
 
 func main() {
-	wStations := wxt.Load("wStations.json")
-	for i, w := range wStations {
+	wStations := wxt.Load(os.Args[1])
+	for _, w := range wStations {
 		w.Configure()
-		go sampleW(&w, i+1)
+		go sampleW(&w)
 	}
 	select {}
 }
