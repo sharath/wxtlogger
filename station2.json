@@ -1,0 +1,7 @@
+[
+  {
+    "location":"/dev/ttyUSB3",
+    "baud": "4800",
+    "id": "2"
+  }
+]
