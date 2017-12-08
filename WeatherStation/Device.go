@@ -9,6 +9,7 @@ import (
 type Device struct {
 	Location string `json:"location"`
 	Baud     int    `json:"baud,string"`
+	Id       int    `json:"id,string"`
 	Response Response
 	port     *serial.Port
 }
@@ -46,7 +47,6 @@ func (wxt *Device) Configure() {
 	wxt.Response.Time = time.Now()
 	wxt.write("0R0\r\n")
 }
-
 
 func (wxt *Device) UpdateResponse() {
 	resp := strings.Split(strings.TrimSpace(wxt.read()),",")
