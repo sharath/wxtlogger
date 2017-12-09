@@ -62,13 +62,16 @@ func (s *Sampler) poll() {
 }
 
 func main() {
-	station := wxt.Load(os.Args[1])[0]
-
-	station.Configure()
-	sampler := InitializeSampler(&station)
-
+	stations := wxt.Load(os.Args[1])
+	samplers := [2]*Sampler{}
+	for i := 0; i < len(stations); i++ {
+		stations[i].Configure()
+		samplers[i] = InitializeSampler(&stations[i])
+	}
 	for _ = range time.NewTicker(time.Second).C {
-		sampler.poll()
+		for i := 0; i < len(samplers); i++ {
+			go samplers[i].poll()
+		}
 	}
 	select {}
 }
