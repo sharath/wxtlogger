@@ -21,6 +21,7 @@ func InitializeSampler(station *wxt.Device) *Sampler {
 	s.Index = 0
 	s.Station = station
 	s.Datafile, _ = os.Create("dummyfile")
+	s.NewFile()
 	return s
 }
 
