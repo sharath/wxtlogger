@@ -11,7 +11,7 @@ type File struct {
 
 func Load(file string) []Device {
 	cf := new(File)
-	configFile,_ := ioutil.ReadFile(file)
+	configFile, _ := ioutil.ReadFile(file)
 	json.Unmarshal(configFile, &cf.wStations)
 	return cf.wStations
 }

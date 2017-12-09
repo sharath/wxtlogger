@@ -39,7 +39,7 @@ func (wxt *Device) Configure() {
 }
 
 func (wxt *Device) UpdateResponse() {
-	resp := strings.Split(strings.TrimSpace(wxt.read()),",")
+	resp := strings.Split(strings.TrimSpace(wxt.read()), ",")
 	wxt.Response.Parse(resp)
 	wxt.Response.Time = time.Now()
 	wxt.write("0R0\r\n")
