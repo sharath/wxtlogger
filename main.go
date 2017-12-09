@@ -11,14 +11,14 @@ import (
 
 type Sampler struct {
 	Writer   bufio.Writer
-	DataFile os.File
+	DataFile *os.File
 	Index    uint64
 	Station  *wxt.Device
 }
 
 func InitializeSampler(station *wxt.Device) *Sampler {
 	s := new(Sampler)
-	s.DataFile = os.File{}
+	s.DataFile = &os.File{}
 	s.Index = 0
 	s.Station = station
 	s.NewFile()
@@ -31,8 +31,8 @@ func (s *Sampler) NewFile() {
 	folder := time.Now().Format("data-20060102")
 	filename := fmt.Sprintf("WX%d-%s", s.Station.Id, time.Now().Format("20060102-030405.txt"))
 	os.Mkdir(folder, 0777)
-	file, _ := os.Create(path.Join(folder, filename))
-	s.Writer = *bufio.NewWriter(file)
+	s.DataFile, _ = os.Create(path.Join(folder, filename))
+	s.Writer = *bufio.NewWriter(s.DataFile)
 
 	header := fmt.Sprintf("Model Number: WXT-510\n")
 	header += fmt.Sprintf("Sample rate: 1 (Hz)\n")
