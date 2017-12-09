@@ -10,17 +10,17 @@ import (
 )
 
 type Sampler struct {
-	Writer *bufio.Writer
+	Writer   *bufio.Writer
 	DataFile *os.File
-	Index uint64
-	Station *wxt.Device
+	Index    uint64
+	Station  *wxt.Device
 }
 
 func InitializeSampler(station *wxt.Device) *Sampler {
 	s := new(Sampler)
 	s.NewFile()
 	s.Index = 0
-	s. Station = station
+	s.Station = station
 	return s
 }
 
@@ -28,7 +28,7 @@ func (s *Sampler) NewFile() {
 	s.DataFile.Close()
 
 	folder := time.Now().Format("data-20060102")
-	filename := fmt.Sprintf("WX%d-%s",s.Station.Id,time.Now().Format("20060102-030405.txt"))
+	filename := fmt.Sprintf("WX%d-%s", s.Station.Id, time.Now().Format("20060102-030405.txt"))
 	os.Mkdir(folder, 0777)
 	file, _ := os.Create(path.Join(folder, filename))
 	s.Writer = bufio.NewWriter(file)
@@ -60,7 +60,6 @@ func (s *Sampler) poll() {
 	s.Writer.Flush()
 	s.Index++
 }
-
 
 func main() {
 	station := wxt.Load(os.Args[1])[0]
