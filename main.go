@@ -13,24 +13,25 @@ type Sampler struct {
 	Writer   bufio.Writer
 	Index    uint64
 	Station  *wxt.Device
+	Datafile *os.File
 }
 
 func InitializeSampler(station *wxt.Device) *Sampler {
 	s := new(Sampler)
 	s.Index = 0
 	s.Station = station
-	s.NewFile()
+	s.Datafile, _ = os.Create("dummyfile")
 	return s
 }
 
 func (s *Sampler) NewFile() {
+	s.Datafile.Close()
+
 	folder := time.Now().Format("data-20060102")
 	filename := fmt.Sprintf("WX%d-%s", s.Station.Id, time.Now().Format("20060102-030405.txt"))
 	os.Mkdir(folder, 0777)
-	datafile, _ := os.Create(path.Join(folder, filename))
-	defer datafile.Close()
-	s.Writer = *bufio.NewWriter(datafile)
-
+	s.Datafile, _ = os.Create(path.Join(folder, filename))
+	s.Writer = *bufio.NewWriter(s.Datafile)
 	header := fmt.Sprintf("Model Number: WXT-510\n")
 	header += fmt.Sprintf("Sample rate: 1 (Hz)\n")
 	header += fmt.Sprintf("Wind speed units: m/s\n")
