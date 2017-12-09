@@ -10,7 +10,7 @@ import (
 )
 
 type Sampler struct {
-	Writer   bufio.Writer
+	Writer   *bufio.Writer
 	Index    uint64
 	Station  *wxt.Device
 	Datafile *os.File
@@ -31,7 +31,7 @@ func (s *Sampler) NewFile() {
 	filename := fmt.Sprintf("WX%d-%s", s.Station.Id, time.Now().Format("20060102-030405.txt"))
 	os.Mkdir(folder, 0777)
 	s.Datafile, _ = os.Create(path.Join(folder, filename))
-	s.Writer = *bufio.NewWriter(s.Datafile)
+	s.Writer = bufio.NewWriter(s.Datafile)
 	header := fmt.Sprintf("Model Number: WXT-510\n")
 	header += fmt.Sprintf("Sample rate: 1 (Hz)\n")
 	header += fmt.Sprintf("Wind speed units: m/s\n")
@@ -40,7 +40,7 @@ func (s *Sampler) NewFile() {
 	header += fmt.Sprintf("Index, Hour, Minute, Second, Direction, Speed, Temp, Humidity, Pressure\n")
 	header += fmt.Sprintf("_______________________________________________________________________\n\n")
 	fmt.Print(header)
-	fmt.Fprint(&s.Writer, header)
+	fmt.Fprint(s.Writer, header)
 	s.Writer.Flush()
 }
 
@@ -55,7 +55,7 @@ func (s *Sampler) poll() {
 		s.Station.Response.Temp, s.Station.Response.Humidity,
 		s.Station.Response.Pressure)
 	fmt.Print(line)
-	fmt.Fprint(&s.Writer, line)
+	fmt.Fprint(s.Writer, line)
 	s.Writer.Flush()
 	s.Index++
 }
