@@ -1,11 +1,9 @@
 package WeatherStation
 
 import (
-	"github.com/json-iterator/go"
 	"io/ioutil"
+	"encoding/json"
 )
-
-var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 type File struct {
 	wStations []Device
