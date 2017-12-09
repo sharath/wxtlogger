@@ -18,6 +18,7 @@ type Sampler struct {
 
 func InitializeSampler(station *wxt.Device) *Sampler {
 	s := new(Sampler)
+	s.DataFile = os.File{}
 	s.Index = 0
 	s.Station = station
 	s.NewFile()
