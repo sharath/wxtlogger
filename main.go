@@ -10,17 +10,17 @@ import (
 )
 
 type Sampler struct {
-	Writer   *bufio.Writer
-	DataFile *os.File
+	Writer   bufio.Writer
+	DataFile os.File
 	Index    uint64
 	Station  *wxt.Device
 }
 
 func InitializeSampler(station *wxt.Device) *Sampler {
 	s := new(Sampler)
-	s.NewFile()
 	s.Index = 0
 	s.Station = station
+	s.NewFile()
 	return s
 }
 
@@ -31,7 +31,7 @@ func (s *Sampler) NewFile() {
 	filename := fmt.Sprintf("WX%d-%s", s.Station.Id, time.Now().Format("20060102-030405.txt"))
 	os.Mkdir(folder, 0777)
 	file, _ := os.Create(path.Join(folder, filename))
-	s.Writer = bufio.NewWriter(file)
+	s.Writer = *bufio.NewWriter(file)
 
 	header := fmt.Sprintf("Model Number: WXT-510\n")
 	header += fmt.Sprintf("Sample rate: 1 (Hz)\n")
@@ -41,7 +41,7 @@ func (s *Sampler) NewFile() {
 	header += fmt.Sprintf("Index, Hour, Minute, Second, Direction, Speed, Temp, Humidity, Pressure\n")
 	header += fmt.Sprintf("_______________________________________________________________________\n\n")
 	fmt.Print(header)
-	fmt.Fprint(s.Writer, header)
+	fmt.Fprint(&s.Writer, header)
 	s.Writer.Flush()
 }
 
@@ -56,7 +56,7 @@ func (s *Sampler) poll() {
 		s.Station.Response.Temp, s.Station.Response.Humidity,
 		s.Station.Response.Pressure)
 	fmt.Print(line)
-	fmt.Fprint(s.Writer, line)
+	fmt.Fprint(&s.Writer, line)
 	s.Writer.Flush()
 	s.Index++
 }
@@ -67,7 +67,7 @@ func main() {
 	station.Configure()
 	sampler := InitializeSampler(&station)
 
-	for range time.NewTicker(time.Second).C {
+	for _ = range time.NewTicker(time.Second).C {
 		sampler.poll()
 	}
 	select {}
