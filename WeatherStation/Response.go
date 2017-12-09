@@ -16,20 +16,14 @@ type Response struct {
 }
 
 func cut(str string, start string, end string) string {
-	t := []rune(str)
-	if len(start) + len(end) < len(str) {
-		t = t[len(start):len(str)-len(end)]
-	}
-	return string(t)
+	return strings.Replace(strings.Replace(str, start, "", -1), end, "", -1)
 }
 
 func (storage *Response) Parse(resp []string) {
 	for _, p := range resp {
 		t := p
-		for strings.Contains(t, "\x00") || strings.Contains(t, "\x00") {
-			t = strings.TrimSuffix(t, "\x00")
-			t = strings.TrimSuffix(t, "\r\n")
-		}
+		t = strings.Replace(t, "\x00", "", -1)
+		t = strings.Replace(t, "\r\n", "", -1)
 		if strings.Contains(t, "Sm=") {
 			storage.WindAvg, _ = strconv.ParseFloat(cut(t, "Sm=", "M"), 64)
 			continue
