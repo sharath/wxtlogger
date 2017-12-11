@@ -1,12 +1,12 @@
 [
   {
     "location": "/dev/ttyUSB2",
-    "baud": "4800",
+    "baud": "9600",
     "id": "1"
   },
   {
     "location": "/dev/ttyUSB3",
-    "baud": "4800",
+    "baud": "9600",
     "id": "2"
   }
 ]
