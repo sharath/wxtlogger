@@ -57,13 +57,17 @@ func (s *Sampler) poll() {
 }
 
 func main() {
+	if len(os.Args) != 2 {
+		fmt.Printf("Invalid Arguments. Format: %s config.json", os.Args[0])
+		os.Exit(-1)
+	}
 	stations := wxt.Load(os.Args[1])
-	samplers := [2]*Sampler{}
+	samplers := [len(stations)]*Sampler{}
 	for i := 0; i < len(stations); i++ {
 		stations[i].Configure()
 		samplers[i] = InitializeSampler(&stations[i])
 	}
-	for _ = range time.NewTicker(time.Second).C {
+	for range time.NewTicker(time.Second).C {
 		for i := 0; i < len(samplers); i++ {
 			go samplers[i].poll()
 		}
