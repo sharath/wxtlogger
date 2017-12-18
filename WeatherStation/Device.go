@@ -26,7 +26,7 @@ func (wxt *Device) read() string {
 
 func (wxt *Device) Configure() {
 	wxt.port, _ = serial.OpenPort(&serial.Config{Name: wxt.Location, Baud: wxt.Baud, ReadTimeout: time.Second})
-	commands := []string{"0XU,M=P,C=3,B=9600,L=25\r\n", "0WU,I=1,A=1,U=M,D=0,N=W,F=4\r\n", "0WU,R=0100100001001000\r\n",
+	commands := []string{"0XU,M=P,C=3,B="+string(wxt.Baud)+",L=25\r\n", "0WU,I=1,A=1,U=M,D=0,N=W,F=4\r\n", "0WU,R=0100100001001000\r\n",
 		"0TU,I=1,P=H,T=F\r\n", "0TU,R=1101000011010000\r\n", "0SU,S=N,H=Y,I=5\r\n", "0SU,R=1111000000000000\r\n"}
 	for _, cmd := range commands {
 		time.Sleep(time.Millisecond * 100)
