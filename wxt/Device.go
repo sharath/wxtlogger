@@ -1,4 +1,4 @@
-package WeatherStation
+package wxt
 
 import (
 	"github.com/tarm/serial"

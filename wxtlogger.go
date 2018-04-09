@@ -1,11 +1,11 @@
 package main
 
 import (
-	wxt "github.com/sharath/wxtlogger/WeatherStation"
 	"time"
 	"fmt"
 	"os"
 	"path"
+	"github.com/wxtlogger/wxt"
 )
 
 type Sampler struct {

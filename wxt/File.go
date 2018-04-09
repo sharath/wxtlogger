@@ -1,4 +1,4 @@
-package WeatherStation
+package wxt
 
 import (
 	"io/ioutil"
